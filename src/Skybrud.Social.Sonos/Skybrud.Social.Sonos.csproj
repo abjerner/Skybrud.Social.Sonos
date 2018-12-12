@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard1.3;net45;net46;net47</TargetFrameworks>
+    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+    <RunBuildTargets>true</RunBuildTargets>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <RootNamespace>Skybrud.Social.Sonos</RootNamespace>
+    <Version>1.0.0-beta001</Version>
+    <Company>Skybrud.dk a/s</Company>
+    <Product>Skybrud.Social</Product>
+    <Authors>Anders Bjerner</Authors>
+    <Copyright>Copyright © 2018</Copyright>
+    <Description>Authentication and service implementation for the Sonos API</Description>
+    <RepositoryUrl>https://github.com/abjerner/Skybrud.Social.Sonos</RepositoryUrl>
+  </PropertyGroup>
+  
+  <PropertyGroup>
+    <PackageTags>Spotify, API, Skybrud, Social, OAuth, JSON</PackageTags>
+    <PackageLicenseUrl>https://github.com/abjerner/Skybrud.Social.Sonos/blob/master/LICENSE.md</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/abjerner/Skybrud.Social.Sonos</PackageProjectUrl>
+    <PackageIconUrl>http://www.skybrud.dk/img/5431sk/icon/favicon.ico</PackageIconUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Skybrud.Social.Core" Version="1.0.11" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\Skybrud.Social.Sonos.xml</DocumentationFile>
+  </PropertyGroup>
+
+
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="mkdir $(ProjectDir)bin\Dev\$(TargetFramework)&#xD;&#xA;xcopy $(ProjectDir)bin\$(ConfigurationName)\$(TargetFramework)\$(TargetName).* $(ProjectDir)bin\Dev\$(TargetFramework)\ /y" />
+  </Target>
+  
+<!--
+  <Target Name="PostBuild" BeforeTargets="PostBuildEvent" Condition="'$(TargetFramework)|$(RunBuildTargets)'=='net46|true'">
+    <Exec Command="&quot;$(SolutionDir)build\UpdateAssemblyInfoJson.exe&quot; &quot;$(ProjectPath)&quot; &quot;$(TargetPath)&quot;" />
+  </Target>
+-->
+</Project>
