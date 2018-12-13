@@ -1,14 +1,22 @@
 ﻿using System.Net;
-using Newtonsoft.Json.Linq;
 using Skybrud.Social.Http;
 using Skybrud.Social.Sonos.Exceptions;
 
 namespace Skybrud.Social.Sonos.Responses {
-
+    
     /// <summary>
     /// Class representing a response from the Sonos API.
     /// </summary>
     public abstract class SonosResponse : SocialResponse {
+
+        #region Properties
+
+        /// <summary>
+        /// Gets a collection of the HTTP headers of the response.
+        /// </summary>
+        public new SonosResponseHeaders Headers { get; }
+
+        #endregion
 
         #region Constructor
 
@@ -16,7 +24,9 @@ namespace Skybrud.Social.Sonos.Responses {
         /// Initializes a new instance based on the specified <paramref name="response"/>.
         /// </summary>
         /// <param name="response">The raw response.</param>
-        protected SonosResponse(SocialHttpResponse response) : base(response) { }
+        protected SonosResponse(SocialHttpResponse response) : base(response) {
+            Headers = new SonosResponseHeaders(response);
+        }
 
         #endregion
 
@@ -30,9 +40,6 @@ namespace Skybrud.Social.Sonos.Responses {
 
             // Skip error checking if the server responds with an OK status code
             if (response.StatusCode == HttpStatusCode.OK) return;
-
-            // Parse the response body
-            JObject obj = ParseJsonObject(response.Body);
 
             // Now throw some exceptions
             throw new SonosHttpException(response);

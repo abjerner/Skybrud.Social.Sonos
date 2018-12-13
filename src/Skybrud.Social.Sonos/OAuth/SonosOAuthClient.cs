@@ -36,10 +36,20 @@ namespace Skybrud.Social.Sonos.OAuth {
         public string AccessToken { get; set; }
 
         /// <summary>
+        /// Gets a reference to the raw <strong>groups</strong> endpoint.
+        /// </summary>
+        public SonosGroupsRawEndpoint Groups { get; }
+
+        /// <summary>
         /// Gets a reference to the raw <strong>households</strong> endpoint.
         /// </summary>
         public SonosHouseholdsRawEndpoint Households { get; }
-        
+
+        /// <summary>
+        /// Gets a reference to the raw <strong>players</strong> endpoint.
+        /// </summary>
+        public SonosPlayersRawEndpoint Players { get; }
+
         #endregion
 
         #region Constructors
@@ -48,7 +58,9 @@ namespace Skybrud.Social.Sonos.OAuth {
         /// Initializes a new OAuth client with default options.
         /// </summary>
         public SonosOAuthClient() {
+            Groups = new SonosGroupsRawEndpoint(this);
             Households = new SonosHouseholdsRawEndpoint(this);
+            Players = new SonosPlayersRawEndpoint(this);
         }
 
         /// <summary>
@@ -104,12 +116,13 @@ namespace Skybrud.Social.Sonos.OAuth {
             }
 
             // Construct the query string
-            IHttpQueryString query = new SocialHttpQueryString();
-            query.Add("client_id", ClientId);
-            query.Add("redirect_uri", RedirectUri);
-            query.Add("response_type", "code");
-            query.Add("scope", "playback-control-all");
-            query.Add("state", state);
+            IHttpQueryString query = new SocialHttpQueryString {
+                { "client_id", ClientId },
+                { "redirect_uri", RedirectUri },
+                { "response_type", "code" },
+                { "scope", "playback-control-all" },
+                { "state", state }
+            };
 
             // Construct the authorization URL
             return "https://api.sonos.com/login/v3/oauth?" + query;

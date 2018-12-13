@@ -22,6 +22,10 @@ namespace Skybrud.Social.Sonos.Exceptions {
         internal SonosHttpException(SocialHttpResponse response) {
             Response = response;
         }
+        
+        internal SonosHttpException(SocialHttpResponse response, Exception innerException) : base(null, innerException) {
+            Response = response;
+        }
 
         #endregion
 
